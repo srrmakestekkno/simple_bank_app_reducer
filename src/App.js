@@ -12,6 +12,8 @@ const DEPOSIT_AMOUNT = 150;
 const LOAN_AMOUNT = 5000;
 
 function reducer(state, action) {
+  const hasLoan = state.loan !== 0;
+
   switch (action.type) {
     case "openAccount":
       return { ...state, isActive: true, balance: BALANCE_ON_OPEN };
@@ -26,7 +28,7 @@ function reducer(state, action) {
             : state.balance,
       };
     case "requestLoan":
-      return state.loan !== 0
+      return hasLoan
         ? { ...state }
         : {
             ...state,
