@@ -12,7 +12,7 @@ const DEPOSIT_AMOUNT = 150;
 const LOAN_AMOUNT = 5000;
 
 function reducer(state, action) {
-  const hasLoan = state.loan !== 0;
+  const hasLoan = state.loan > 0;
 
   switch (action.type) {
     case "openAccount":
@@ -29,17 +29,17 @@ function reducer(state, action) {
       };
     case "requestLoan":
       return hasLoan
-        ? { ...state }
+        ? state
         : {
             ...state,
-            loan: state.loan + action.payload,
+            loan: action.payload,
             balance: state.balance + action.payload,
           };
 
     case "payLoan":
       return { ...state, balance: state.balance - state.loan, loan: 0 };
     case "closeAccount":
-      return state.balance === 0 && !hasLoan ? initialState : { ...state };
+      return state.balance === 0 && !hasLoan ? initialState : state;
     default:
       throw new Error("Unknown action...");
   }
